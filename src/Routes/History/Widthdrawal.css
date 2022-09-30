@@ -1,0 +1,15 @@
+@media only screen and (max-width: 1000px) {
+   .width-mg{
+    width: 91.5% !important;
+   }
+#withdraw-inp{
+    width: 137.666667% !important;
+    margin-left: -18% !important;
+}
+
+.text-denger{
+    font-size: larger !important;
+
+}
+
+}

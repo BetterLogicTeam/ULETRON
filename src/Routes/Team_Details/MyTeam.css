@@ -1,0 +1,41 @@
+
+@media only screen and (max-width: 1000px) {
+    /* .team-dis{
+        display: block !important;
+    } */
+
+    #input-select{
+        width: 100% !important;
+     }
+
+    .profile-login{
+        width: 86.666667% !important;
+
+    }
+    .select-choi{
+        width: 49.666667% !important;
+
+    }
+    .select-val{
+        margin-bottom: 15px !important;
+width: 66.66% !important;
+    }
+ 
+ }
+ .container1{
+    margin: 0px 100px !important;
+ }
+
+ @media only screen and (max-width: 600px) {
+ 
+ .choose{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+ }
+
+
+ 
+
+ 

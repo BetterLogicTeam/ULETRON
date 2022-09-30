@@ -1,0 +1,13 @@
+@media only screen and (max-width: 774px) {
+    .my-team {
+        margin-left: -75% !important;
+        width: 256% !important;
+    }
+
+}
+@media (min-width:775px) and (max-width:1000px){
+    .my-team{
+        margin-left: -131% !important;
+    width: 491% !important;
+    }
+}

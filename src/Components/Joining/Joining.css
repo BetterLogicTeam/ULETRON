@@ -1,0 +1,13 @@
+.char-joining{
+    transform: translateX(-10px);
+}
+
+@media only screen and (max-width: 1000px) {
+.br-1{
+    width: 109%;
+}
+#m-0{
+    margin-left: -13px !important;
+
+}
+}

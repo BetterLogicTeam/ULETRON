@@ -1,0 +1,21 @@
+.inputAffiliate{
+    border: 0px 1px 0px 1px solid white !important;
+    border-radius: 15rem;
+    padding: 10px;
+    padding-left: 1rem;
+    border: 1px solid white;
+
+    width: 550px !important;
+}
+.main_div_Affiliate{
+    display: flex;
+    justify-content: center;
+    width: 78%;
+}
+.affilate{
+    display: flex;
+    justify-content: space-between;
+}
+.ptn{
+    top: -16px;
+}

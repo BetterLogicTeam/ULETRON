@@ -1,0 +1,325 @@
+#reg-layout .reg-box {
+    position: relative;
+    background: #fff;
+    width: 100%;
+    margin: 10rem auto;
+    border: 1px solid rgb(9 69 107);
+    box-sizing: border-box;
+    padding: 3rem 5rem 4rem;
+    text-align: center;
+    min-height: 460px;
+}
+
+#reg-layout .subtitle {
+    color: #fff;
+    text-align: center;
+    display: block;
+    font-size: 14px;
+    padding: 0 0 1.5rem;
+}
+
+.pop-up-add{
+margin-left: 24%;
+margin-top: 50px;
+}
+
+.ule_logo img {
+    margin: auto;
+    height: 62px;
+}
+
+#reg-layout .btn {
+    border-radius: 5px;
+    cursor: pointer;
+    transition: .2s linear;
+    text-decoration: none;
+    /* font: 300 1.7rem "Mukta Vaani",sans-serif; */
+    margin-bottom: 0.5rem;
+    border: 1px solid #ffffff7d;
+    margin-top: 10px;
+    width: 100%;
+    opacity: inherit;
+}
+#reg-layout .btn:hover{
+    color: #979797 !important;
+}
+.loginbtn {
+    background-color: #f4cd44 ;
+    color: #000 !important;
+}
+
+.lg-btn{
+    background-color:#5501a98a !important;
+}
+::placeholder {
+    color: #fff;
+    opacity: 1; /* Firefox */
+  }
+.input_bg {
+    border: 1px solid #ffffff7d !important;
+    margin-bottom: 5px;
+    width: 100%;
+    font-size: 14px !important;
+    padding: 12px 4px;
+    margin-top: 10px;
+    text-align: center;
+    border: unset;
+    background: #fbc50b;
+    color: #fff !important;
+    border-radius: 5px;
+}
+#metamaskConnection{
+color: red;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    /* z-index: 1; */
+    padding-top: 100px;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+.set_transfort {
+    transform: translate(0px, 40%);
+}
+.modal-title{
+    color: white;
+}
+.btn-close{
+    color: #fff !important;
+}
+.modal-header{
+    border-bottom: 0px !important;
+}
+.MuiInputBase-input:invalid {
+    box-shadow: none;
+    border: 1px solid #ffffffe3 !important;
+    color: white !important;
+}
+.MuiInputBase-inputMarginDense {
+    padding-top: 3px;
+    color: white !important;
+    padding: 12px !important;
+    border: 1px solid white !important;
+    box-shadow: none;
+}
+.btn-close{
+    color: white !important;
+}
+.modal-content {
+    background-color: #0e012a;
+    margin: auto;
+    padding: 10px 10px 30px;
+    border: 1px solid #fff;
+    width: 350px;
+    
+    border-radius: 6px;
+    transform: translate(0px, 50%);
+}
+.MuiTypography-colorTextSecondary {
+    color: rgb(255 255 255) !important;
+}
+.MuiPaper-root {
+    color: rgba(0, 0, 0, 0.87);
+    transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    background-color: #19013e !important;
+    border: 1px solid #ffffff59 !important;
+}
+.rerlbtn button, .rerlbtn a {
+    padding: 2px;
+    background: #f4cd44;
+    color: #000;
+    width: 49%;
+    margin-top: 21px;
+}
+.uplineBtn .btn {
+    background-color: #f4cd44;
+    padding: 2px 5px;
+    width: 30%;
+    margin-top: 21px;
+}
+.modal_btn {
+    justify-content: center;
+}
+.maticRate {
+    display: flex;
+    justify-content: center;
+    margin: 1.5rem 0;
+    margin-left: -36%;
+
+}
+.maticRate div span {
+    padding-right: 4px;
+}
+.maticRate div input {
+    max-width: 63px;
+    height: 25px;
+}
+.maticRate div:nth-child(2) span {
+    padding-left: 8px;
+}
+
+.selecOpt {
+    width: 70%;
+    height: 29px;
+}
+.bdl_non {
+    padding-left: unset;
+}
+#reg-layout .reg-box {
+    position: relative;
+    background: rgba(0, 0, 0, .2);
+    width: 100%;
+    box-shadow: 0px 0px 25px 3px rgb(255 255 255 / 44%) !important;
+    margin: 10rem auto;
+    border: 1px solid rgb(255 255 255 / 45%);
+    box-sizing: border-box;
+    border-radius: 20px;
+    padding: 3rem 5rem 4rem;
+    text-align: center;
+    min-height: 506px;
+}
+
+.text-de{
+    text-decoration: none !important;
+}
+
+#reg-layout .reg-box {
+    transition: .3s;
+}
+.social-media {
+    display: inline-block;
+}
+.right-btn-styl {
+    margin: 12px 0;
+    background: no-repeat;
+    border: solid 1px #ccc;
+    color: #000;
+    padding: 10px 20px;
+    font-weight: 600;
+    font-size: 14px;
+    border-radius: 4px;
+    width: 100%;
+}
+.loginbtn {
+    background: #f4cd44 ;
+    color: #fff !important;
+}
+
+.left-btn-styl {
+    border: solid 2px #ffffff;
+    background: #1350a9;
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    margin-top: 16px;
+    padding: 10px 20px;
+    /* color: #fff; */
+    border-radius: 6px;
+}
+
+.left-btn-styl:hover{
+color: black !important;
+}
+
+.loader {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    display: none;
+    background-size: 100px;
+    opacity: .7;
+    background-color: #000;
+}
+
+.loaderbg {
+    /* background-image: url(assets/img/ule-100.png); */
+    animation: animName 3s linear infinite;
+    width: 100px;
+    height: 100px;
+    margin: 20px;
+    position: absolute;
+    top: -132px;
+    left: -21px;
+}
+.loader {
+    position: fixed;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    display: none;
+    background-size: 100px;
+    opacity: .7;
+    background-color: #000;
+}
+.alert-danger {
+    color: #ffffff;
+    background-color: #ff1900;
+    border-color: #ffb8b0;
+    padding: 0;
+}
+#reg-layout .reg-box:hover {
+    box-shadow: 0px 0px 25px 3px rgb(255 255 255 / 44%) !important;
+}
+
+#reg-layout{
+    background-size: cover;
+    background: linear-gradient(217deg, rgba(93,9,116,1) 0%, rgba(24,3,102,1) 53%, rgba(82,1,153,1) 100%, rgba(73,7,101,1) 1000%);
+    /* background-image: url("../../assets/loginbg.jpg"); */
+    background-attachment: fixed;
+    background-position: center;
+}
+
+.log-pa{
+    background-color: white;
+    width: 100%;
+    border-radius: 13px;
+    margin-top: -75%;
+    margin-left: -20%;
+}
+.lg-page{
+    padding: 0 20px !important;
+}
+.ww{
+    color: black !important; 
+}
+.Toastify__toast-theme--light {
+    background: #160252 !important;
+    color: #ffffff !important;
+}
+.Toastify__progress-bar--warning {
+    background: #ffffff !important;
+}
+.MuiDialog-paperScrollPaper {
+    display: flex;
+    max-height: calc(100% - 235px) !important;
+    flex-direction: column;
+}
+
+@media only screen and (max-width: 1000px) {
+   .pop-up-add{
+    margin-left: 0;
+   }
+
+   #model-add {
+    margin-left: -46% !important;
+   }
+   #selecOpt-1{
+    width: 50% !important;
+   }
+ 
+ }
+
+
+ #model-add{
+    margin-left: -9%;
+ }

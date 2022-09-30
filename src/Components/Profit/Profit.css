@@ -1,0 +1,12 @@
+.half{
+    width: 50%;
+}
+
+@media only screen and (max-width: 1000px) {
+    #my-profit {
+        margin-left: -70% !important;
+    width: 246%;
+    }
+
+
+}

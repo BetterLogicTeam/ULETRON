@@ -1,0 +1,31 @@
+@media only screen and (max-width: 774px) {
+    .my-link {
+        margin-left: -75% !important;
+        width: 256% !important;
+}
+.main_class_copy{
+display: block;
+}
+
+.affilate-block{
+    display: block;
+}
+.affilate-btn{
+    margin: 10px;
+
+}
+
+.main_div_Affiliate{
+    width: 100% !important;
+    justify-content: flex-start;
+
+}
+
+
+}
+@media (min-width:775px) and (max-width:1000px){
+    .my-link {
+    margin-left: -60% !important;
+    width: 229% !important;
+    }
+}
