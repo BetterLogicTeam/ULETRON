@@ -34,15 +34,15 @@ function Registration() {
     // setRegistered(false);
   }
   const [sId, setSId] = useState(null)
-  let [rate, setRate] = useState()
+  let [rate, setRate] = useState(0)
   let [ratematic, setRateMatic] = useState()
   const user = localStorage?.getItem('user')
   const LiveRateAPI = async () => {
     try {
-      let res = await API.get(`/live_rate?id=${user}`)
-      res = res.data.data[0]
-      console.log('res', res)
-      setRate(res.usdperunit * 10)
+      let res = await API.get(`/live_rate_USD_Tron?id=${user}`)
+      console.log('reeeeees', res.data.data)
+      let {limits} = res.data.data[0]
+      setRate(limits * 10)
     } catch (e) {
       console.log('Error While Fatch Dashboard API', e)
     }
@@ -214,7 +214,7 @@ function Registration() {
 
   // 50 50 _______________________________----------------------------------------
 
-  const CONTRACT_ADDRESS = 'TB6ZeEX4xNbjqav8ceEh4ehXtL47jJs5CQ'
+  const CONTRACT_ADDRESS = 'TA3aJxL9pKd1knQgFehzdkXekeaQAxBrT6'
   const Token_contract_Address = 'TLcKN2SBTAhiuUmkCvb86hRGdnV42cGyrt'
 
   const SellToken = async () => {
@@ -233,37 +233,40 @@ function Registration() {
       // window.location.reload()
     }
     else {
-      let Token_contract = await window?.tronWeb?.contract().at(Token_contract_Address)
+      // let Token_contract = await window?.tronWeb?.contract().at(Token_contract_Address)
 
       let contract = await window?.tronWeb?.contract().at(CONTRACT_ADDRESS)
-      ratematic=ratematic*1000000000000000000
-      ratematic=parseInt(ratematic).toString()
-      rate=rate*1000000
-      rate=parseInt(rate).toString()
+      // ratematic=ratematic*1000000000000000000
+      // ratematic=parseInt(ratematic).toString()
 
-      await Token_contract.approve(CONTRACT_ADDRESS, ratematic)
-        .send({
-          shouldPollResponse: true,
-        })
-        .then((output) => {
-          console.log('- Output:', output, '\n')
-          toast.success('Approve  Successfull')
+      console.log("hassaan" ,rate)
+      rate=rate*1000000
+      rate = rate *10
+      rate=parseInt(rate).toString()
+      console.log("asadas" ,rate)
+      // await Token_contract.approve(CONTRACT_ADDRESS, ratematic)
+      //   .send({
+      //     shouldPollResponse: true,
+      //   })
+      //   .then((output) => {
+      //     console.log('- Output:', output, '\n')
+      //     toast.success('Approve  Successfull')
    
 
-        })
-        .catch((e) => {
-          toast.error(e.message)
-          console.log('Error while caling Approve  Fuction', e)
-      setIsLoading(false);
+      //   })
+      //   .catch((e) => {
+      //     toast.error(e.message)
+      //     console.log('Error while caling Approve  Fuction', e)
+      // setIsLoading(false);
 
-        })
+        // })
 
       await contract
-        .UlebuyRouter(ratematic)
+        .buy()
         .send({
           // shouldPollResponse: true,
           callValue: rate,
-          feeLimit: 100000000,
+          feeLimit: 100000000
         })
 
         .then(async (hash) => {
@@ -403,10 +406,10 @@ function Registration() {
                                           <span style={{color:'white'}}>Tron</span>
                                           <input type="number" style={{  backgroundColor: "rgb(32 15 94)" ,color:'white'}} placeholder={`${rate}`} name="number" readonly="" />
                                         </div>
-                                        <div>
+                                        {/* <div>
                                           <span style={{color:'white'}}>ULE</span>
                                           <input type="number" style={{ backgroundColor: "rgb(32 15 94)" ,color:'white'}} placeholder={`${ratematic}`} name="number" readonly="" />
-                                        </div>
+                                        </div> */}
                                       </div>
 
                                       <select class="selecOpt" id='selecOpt-1' style={{ marginLeft: '14%' ,  backgroundColor: "rgb(32 15 94)" ,color:'white'}}>
@@ -447,8 +450,8 @@ function Registration() {
                                   class="btn lg-btn"
                                   style={{ marginLeft: '2%', backgroundColor: '#fbc50b', width: '48%', color: 'white' }}
                                 >
-                                  {' '}
-                                  Close{' '}
+                                  
+                                  Close
                                 </a>
                               </div>
                             </div>
