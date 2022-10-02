@@ -42,7 +42,7 @@ function Registration() {
       let res = await API.get(`/live_rate_USD_Tron?id=${user}`)
       console.log('reeeeees', res.data.data)
       let {limits} = res.data.data[0]
-      setRate(limits * 10)
+      setRate(limits)
     } catch (e) {
       console.log('Error While Fatch Dashboard API', e)
     }
@@ -85,7 +85,7 @@ function Registration() {
     } catch (error) {
       toast.error(error.message)
 
-      console.log('error', error.message)
+      console.log('errorrrrr', error.message)
     }
   }
   // const getBalanceOfAccount = async () => {
@@ -186,7 +186,7 @@ function Registration() {
       
     } catch (e) {
       console.log('error', e)
-      toast.error('Something went wrong !')
+      toast.error()
       setIsLoading(false);
 
     }
