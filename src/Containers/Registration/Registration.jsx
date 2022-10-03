@@ -13,10 +13,13 @@ import { useNavigate } from 'react-router-dom'
 import { loadWeb3 } from '../../apis/api'
 import { troncontract, troncontract_abi, ULE_token, ule_token_abi } from '../Activate/constants'
 import TronWeb from 'tronweb'
+import { Dna } from 'react-loader-spinner';
+
 
 // import Model from "../Registration/model";
 
 function Registration() {
+
   const nevigate = useNavigate()
   const history = useNavigate();
   const dispatch = useDispatch()
@@ -24,6 +27,7 @@ function Registration() {
   const [trn, settrn] = useState('')
   const [account, setaccount] = useState(null)
   const [isLoading, setIsLoading] = useState(false);
+  const [loader, setloader] = useState(false)
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -170,28 +174,49 @@ function Registration() {
     try {
       
       console.log('Account Api', tronAddress)
+      setloader(true)
       const res = await API.post(`/registration`, {
+
         sid: sId,
         accountnumber: tronAddress,
         position: 1,
         amount: 10,
         traxn: hash,
+        // traxn:"a7f77af7732431cb38c1b0ce18361fd4d500aedbf9a039bdc9151230fa9600e5"
+
       })
       console.log(res)
-      handleLogin2(tronAddress)
+      if (res.data.data == "waiting") {
+        console.log(res.data)
+        // localStorage.setItem('user_Id', uid)
+        setloader(true)
+        setTimeout(() => {
+          handleLogin2(tronAddress)
+        }, 60000);
+        toast.success('Registered Successfully')
 
-      toast.success('Successfully registered !')
-      setIsLoading(false);
+    } else {
+        toast.error('Account Already Resgistered with this ID')
+        nevigate('/dashboard')
+
+    }
+      // handleLogin2(tronAddress)
+
+      // toast.success('Successfully registered !')
+      // setloader(false);
     
       
     } catch (e) {
       console.log('error', e)
       toast.error()
-      setIsLoading(false);
+      setloader(false);
+    
 
     }
   }
   const handleLogin2 = async (ids) => {
+    setloader(true)
+    console.log("Tayyab");
     let res = await dispatch(loginAction(ids))
     console.log('API Res', res)
     if (res) {
@@ -201,7 +226,7 @@ function Registration() {
       // window.location.reload()
     } else {
       toast.error('Something went wrong ! ')
-      setIsLoading(false);
+      setloader(false);
 
     }
   }
@@ -305,6 +330,21 @@ function Registration() {
   return (
     <div>
       <div id="root">
+      {loader == true ? 
+      <>
+      <div className='LoaderSpinner'>
+               <Dna
+                visible={true}
+                height="180"
+                width="180"
+                ariaLabel="dna-loading"
+                wrapperStyle={{}}
+                wrapperClass="dna-wrapper"
+                />
+        </div>
+      </>
+      
+      : <></>}
         <div id="reg-layout">
           <div class="Toastify"></div>
           {/* {registered && <Model setRegistered={setRegistered} />} */}
@@ -418,12 +458,16 @@ function Registration() {
                                       </select>
                                       <div class="uplineBtn modal_btn">
                                         <button class="btn mr_5 lg-btn" style={{ color:'white',}} onClick={() => SellToken()} disabled={isLoading}>
-                                        {isLoading && (
+                                        {isLoading ? (
                                           <div class="spinner-border text-secondary" role="status">
                                           <span class="visually-hidden">Loading...</span>
                                          </div>
-                                          )} {' '}
-                                          Proceed
+                                          )
+                                          :
+                                          <>Proceed</>
+                                        
+                                        } 
+                                          
                                         </button>
                                         <a
                                           href="#"
