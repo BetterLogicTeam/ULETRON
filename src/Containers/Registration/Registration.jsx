@@ -294,9 +294,8 @@ function Registration() {
                 console.log('Hash:', hash, '\n')
                 toast.success('Transaction is complete')
                 setloader(true)
-                setTimeout(() => {
-                  registered(hash)
-                }, 60000);
+               
+                registered(hash)
                 setIsLoading(false);
 
               } catch (e) {
