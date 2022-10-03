@@ -181,8 +181,8 @@ function Registration() {
         accountnumber: tronAddress,
         position: 1,
         amount: 10,
-        // traxn: hash,
-        traxn:"a7f77af7732431cb38c1b0ce18361fd4d500aedbf9a039bdc9151230fa9600e5"
+        traxn: hash,
+        // traxn:"a7f77af7732431cb38c1b0ce18361fd4d500aedbf9a039bdc9151230fa9600e5"
 
       })
       console.log(res)
