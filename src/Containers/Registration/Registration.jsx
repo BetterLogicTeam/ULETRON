@@ -45,7 +45,7 @@ function Registration() {
     try {
       let res = await API.get(`/live_rate_USD_Tron?id=${user}`)
       console.log('reeeeees', res.data.data)
-      let {limits} = res.data.data[0]
+      let { limits } = res.data.data[0]
       setRate(limits)
     } catch (e) {
       console.log('Error While Fatch Dashboard API', e)
@@ -172,7 +172,7 @@ function Registration() {
     // console.log("Hash_Register",hash);
     tronConnect()
     try {
-      
+
       console.log('Account Api', tronAddress)
       setloader(true)
       const res = await API.post(`/registration`, {
@@ -181,8 +181,8 @@ function Registration() {
         accountnumber: tronAddress,
         position: 1,
         amount: 10,
-        traxn: hash,
-        // traxn:"a7f77af7732431cb38c1b0ce18361fd4d500aedbf9a039bdc9151230fa9600e5"
+        // traxn: hash,
+        traxn:"a7f77af7732431cb38c1b0ce18361fd4d500aedbf9a039bdc9151230fa9600e5"
 
       })
       console.log(res)
@@ -195,22 +195,22 @@ function Registration() {
         }, 60000);
         toast.success('Registered Successfully')
 
-    } else {
+      } else {
         toast.error('Account Already Resgistered with this ID')
         nevigate('/dashboard')
 
-    }
+      }
       // handleLogin2(tronAddress)
 
       // toast.success('Successfully registered !')
       // setloader(false);
-    
-      
+
+
     } catch (e) {
       console.log('error', e)
       toast.error()
       setloader(false);
-    
+
 
     }
   }
@@ -243,83 +243,82 @@ function Registration() {
   const Token_contract_Address = 'TLcKN2SBTAhiuUmkCvb86hRGdnV42cGyrt'
 
   const SellToken = async () => {
-    
+
     try {
       setIsLoading(true);
       let respon = await dispatch(loginAction(tronAddress));
-    console.log("LOgin_Api_Res",respon);
-    // setTimeout(() => {
-    if (respon) {
-      
-      
-
+      console.log("LOgin_Api_Res", respon);
+      // setTimeout(() => {
+      if (respon) {
         history("/dashboard");
-      
-      // window.location.reload()
-    }
-    else {
-      // let Token_contract = await window?.tronWeb?.contract().at(Token_contract_Address)
+        // window.location.reload()
+      }
+      else {
+        // let Token_contract = await window?.tronWeb?.contract().at(Token_contract_Address)
+        let contract = await window?.tronWeb?.contract().at(CONTRACT_ADDRESS)
+        // ratematic=ratematic*1000000000000000000
+        // ratematic=parseInt(ratematic).toString()
+        console.log("hassaan", rate)
+        rate = rate * 1000000
+        rate = rate * 10
+        rate = parseInt(rate).toString()
+        console.log("asadas", rate)
+        // await Token_contract.approve(CONTRACT_ADDRESS, ratematic)
+        //   .send({
+        //     shouldPollResponse: true,
+        //   })
+        //   .then((output) => {
+        //     console.log('- Output:', output, '\n')
+        //     toast.success('Approve  Successfull')
 
-      let contract = await window?.tronWeb?.contract().at(CONTRACT_ADDRESS)
-      // ratematic=ratematic*1000000000000000000
-      // ratematic=parseInt(ratematic).toString()
 
-      console.log("hassaan" ,rate)
-      rate=rate*1000000
-      rate = rate *10
-      rate=parseInt(rate).toString()
-      console.log("asadas" ,rate)
-      // await Token_contract.approve(CONTRACT_ADDRESS, ratematic)
-      //   .send({
-      //     shouldPollResponse: true,
-      //   })
-      //   .then((output) => {
-      //     console.log('- Output:', output, '\n')
-      //     toast.success('Approve  Successfull')
-   
-
-      //   })
-      //   .catch((e) => {
-      //     toast.error(e.message)
-      //     console.log('Error while caling Approve  Fuction', e)
-      // setIsLoading(false);
+        //   })
+        //   .catch((e) => {
+        //     toast.error(e.message)
+        //     console.log('Error while caling Approve  Fuction', e)
+        // setIsLoading(false);
 
         // })
 
-      await contract
-        .buy()
-        .send({
-          // shouldPollResponse: true,
-          callValue: rate,
-          feeLimit: 100000000
-        })
+        await contract
+          .buy()
+          .send({
+            // shouldPollResponse: true,
+            callValue: rate,
+            feeLimit: 100000000
+          })
 
-        .then(async (hash) => {
-          if (hash != '') {
-            try {
-              console.log('Hash:', hash, '\n')
-              toast.success('Transaction is complete')
-              registered(hash)
-            } catch (e) {
-              console.log('Error', e)
-      setIsLoading(false);
+          .then(async (hash) => {
+            if (hash != '') {
+              try {
+                console.log('Hash:', hash, '\n')
+                toast.success('Transaction is complete')
+                setloader(true)
+                setTimeout(() => {
+                  registered(hash)
+                }, 60000);
+                setIsLoading(false);
+
+              } catch (e) {
+                console.log('Error', e)
+                setIsLoading(false);
+
+              }
+            } else {
+              console.log('Not Get Hash')
+              setIsLoading(false);
 
             }
-          } else {
-            console.log('Not Get Hash')
-      setIsLoading(false);
+          })
+          .catch((e) => {
+            toast.error(e.message)
+            console.log('Error while caling sell Fuction', e)
+            setIsLoading(false);
 
-          }
-        })
-        .catch((e) => {
-          toast.error(e.message)
-          console.log('Error while caling sell Fuction', e)
-      setIsLoading(false);
-
-        })
+          })
       }
-    
-    
+
+
     } catch (e) {
       console.log('Error In Sell function', e)
       setIsLoading(false);
@@ -327,42 +326,51 @@ function Registration() {
     }
   }
 
+
+  const chackfunction=async()=>{
+    setIsLoading(true);
+
+    setTimeout(() => {
+      registered()
+    }, 60000);
+  }
+
   return (
     <div>
       <div id="root">
-      {loader == true ? 
-      <>
-      <div className='LoaderSpinner'>
-               <Dna
+        {loader == true ?
+          <>
+            <div className='LoaderSpinner'>
+              <Dna
                 visible={true}
                 height="180"
                 width="180"
                 ariaLabel="dna-loading"
                 wrapperStyle={{}}
                 wrapperClass="dna-wrapper"
-                />
-        </div>
-      </>
-      
-      : <></>}
+              />
+            </div>
+          </>
+
+          : <></>}
         <div id="reg-layout">
           <div class="Toastify"></div>
           {/* {registered && <Model setRegistered={setRegistered} />} */}
-          
+
           <div class="container">
             <div class="row">
               <div class="col-md-1"></div>
               <div class="col-md-11" style={{ marginTop: '-60px' }}>
                 <div class="row bx_hover">
                   <div className="col-md-3">
-                  
+
                   </div>
                   <div class="col-md-6 bdr_non">
                     <div class="reg-box">
                       <div class="reg-content">
                         <div class="login_hd">
-                        <img src="assets/images/logo.png" alt="" style={{width:"50%"}} />
-                        <br />
+                          <img src="assets/images/logo.png" alt="" style={{ width: "50%" }} />
+                          <br />
                           <h2>
                             <a className="text-de" href="index.html" style={{ color: '#fff', fontSize: 'smaller' }}>
                               Registration
@@ -370,15 +378,15 @@ function Registration() {
                           </h2>
                         </div>
                         <div class="subtitle">Automatic login if you have Tron wallet:</div>
-                       
-                       
-                       {
-                        account==null ? ( <span id="metamaskConnections" style={{ color: 'red', fontSize: '14px' }}>
-                          Tron is not connected..!..Wait...
-                        </span>):( <span id="metamaskConnections" style={{ color: 'green', fontSize: '14px' }}>
-                          Tron is  connected .
-                        </span>)
-}
+
+
+                        {
+                          account == null ? (<span id="metamaskConnections" style={{ color: 'red', fontSize: '14px' }}>
+                            Tron is not connected..!..Wait...
+                          </span>) : (<span id="metamaskConnections" style={{ color: 'green', fontSize: '14px' }}>
+                            Tron is  connected .
+                          </span>)
+                        }
                         {/* <!-- Button trigger modal --> */}
                         <button type="button" class="btn lg-btn btn left-btn-styl loginbtn text-de lg-btn " data-bs-toggle="modal" data-bs-target="#exampleModal">
                           Register
@@ -437,14 +445,14 @@ function Registration() {
                                       class="modal-content boxset set_transfort2" id='model-add'
                                       style={{ marginTop: '-340px', position: 'fixed' }}
                                     >
-                                      <h4 style={{color:'white'}}>Referral Confirmation</h4>
+                                      <h4 style={{ color: 'white' }}>Referral Confirmation</h4>
                                       <p style={{ color: 'white' }}>
                                         Your Current Referral ID is <span>{sId}</span>
                                       </p>
                                       <div class="maticRate" style={{ marginLeft: '-9%' }}>
                                         <div>
-                                          <span style={{color:'white'}}>Tron</span>
-                                          <input type="number" style={{  backgroundColor: "rgb(32 15 94)" ,color:'white'}} placeholder={`${rate}`} name="number" readonly="" />
+                                          <span style={{ color: 'white' }}>Tron</span>
+                                          <input type="number" style={{ backgroundColor: "rgb(32 15 94)", color: 'white' }} placeholder={`${rate}`} name="number" readonly="" />
                                         </div>
                                         {/* <div>
                                           <span style={{color:'white'}}>ULE</span>
@@ -452,22 +460,22 @@ function Registration() {
                                         </div> */}
                                       </div>
 
-                                      <select class="selecOpt" id='selecOpt-1' style={{ marginLeft: '14%' ,  backgroundColor: "rgb(32 15 94)" ,color:'white'}}>
-                                        <option value="Left" style={{ color:'white',}}>Left</option>
-                                        <option value="Right" style={{ color:'white',}}>Right</option>
+                                      <select class="selecOpt" id='selecOpt-1' style={{ marginLeft: '14%', backgroundColor: "rgb(32 15 94)", color: 'white' }}>
+                                        <option value="Left" style={{ color: 'white', }}>Left</option>
+                                        <option value="Right" style={{ color: 'white', }}>Right</option>
                                       </select>
                                       <div class="uplineBtn modal_btn">
-                                        <button class="btn mr_5 lg-btn" style={{ color:'white',}} onClick={() => SellToken()} disabled={isLoading}>
-                                        {isLoading ? (
-                                          <div class="spinner-border text-secondary" role="status">
-                                          <span class="visually-hidden">Loading...</span>
-                                         </div>
+                                        <button class="btn mr_5 lg-btn" style={{ color: 'white', }} onClick={() => SellToken()} disabled={isLoading}>
+                                          {isLoading ? (
+                                            <div class="spinner-border text-secondary" role="status">
+                                              <span class="visually-hidden">Loading...</span>
+                                            </div>
                                           )
-                                          :
-                                          <>Proceed</>
-                                        
-                                        } 
-                                          
+                                            :
+                                            <>Proceed</>
+
+                                          }
+
                                         </button>
                                         <a
                                           href="#"
@@ -476,7 +484,7 @@ function Registration() {
                                             width: '68%',
                                             marginLeft: '2%',
                                             fontSize: '14px',
-                                            color:'white',
+                                            color: 'white',
                                             height: '32px',
                                             paddingTop: '5px;',
                                           }}
@@ -494,7 +502,7 @@ function Registration() {
                                   class="btn lg-btn"
                                   style={{ marginLeft: '2%', backgroundColor: '#fbc50b', width: '48%', color: 'white' }}
                                 >
-                                  
+
                                   Close
                                 </a>
                               </div>
