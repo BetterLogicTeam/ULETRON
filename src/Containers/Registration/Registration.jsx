@@ -192,7 +192,7 @@ function Registration() {
         setloader(true)
         setTimeout(() => {
           handleLogin2(tronAddress)
-        }, 60000);
+        }, 80000);
         toast.success('Registered Successfully')
 
       } else {
