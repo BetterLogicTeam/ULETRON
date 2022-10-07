@@ -14,6 +14,7 @@ import { loadWeb3 } from '../../apis/api'
 import { troncontract, troncontract_abi, ULE_token, ule_token_abi } from '../Activate/constants'
 import TronWeb from 'tronweb'
 import { Dna } from 'react-loader-spinner';
+import axios from 'axios'
 
 
 // import Model from "../Registration/model";
@@ -28,6 +29,11 @@ function Registration() {
   const [account, setaccount] = useState(null)
   const [isLoading, setIsLoading] = useState(false);
   const [loader, setloader] = useState(false)
+  const [positionselect, setpositionselect] = useState(1)
+  const [isVisible, setisVisible] = useState(false)
+  const [isVisible2, setisVisible2] = useState(false)
+  const [NewUserID, setNewUserID] = useState()
+
 
   const handleClickOpen = () => {
     setOpen(true)
@@ -44,8 +50,9 @@ function Registration() {
   const LiveRateAPI = async () => {
     try {
       let res = await API.get(`/live_rate_USD_Tron?id=${user}`)
-      console.log('reeeeees', res.data.data)
-      let { limits } = res.data.data[0]
+      console.log('reeeeees', res.data.data[0].limits)
+      let limits  = res.data.data[0].limits
+      limits = limits * 10
       setRate(limits)
     } catch (e) {
       console.log('Error While Fatch Dashboard API', e)
@@ -69,6 +76,18 @@ function Registration() {
       if (mainAccount) {
         settronAddress(mainAccount)
         setaccount(mainAccount)
+        let res = await axios.post('https://ulematic.herokuapp.com/CheckRegisterUser', {
+          "accountnumber": mainAccount
+        })
+
+        console.log("CheckRegiter", res.data.data);
+
+        if (res.data.data.result == "Free Registered. Please Pay payment !!") {
+          setisVisible2(true)
+        }
+
+
+
         localStorage.setItem('mainAccount', mainAccount)
         console.log('mainAccount', mainAccount)
         setTimeout(() => {
@@ -92,17 +111,9 @@ function Registration() {
       console.log('errorrrrr', error.message)
     }
   }
-  // const getBalanceOfAccount = async () => {
-  //   try {
-  //     await window.tronWeb.trx.getBalance(mainAccount, function (err, res) {
-  //       var blnc = parseInt(res) / 1000000;
-  //       setTrxBalance(blnc.toFixed(3));
-  //     });
-  //   }
-  //   catch (e) {
-  //     console.log("blnc", e);
-  //   }
-  // }
+
+
+
 
   useEffect(() => {
     setTimeout(() => {
@@ -173,37 +184,46 @@ function Registration() {
     tronConnect()
     try {
 
-      console.log('Account Api', tronAddress)
+      console.log('Account Api', account)
       setloader(true)
-      const res = await API.post(`/registration`, {
+      const res = await API.post(`/registration_v1`, {
 
         sid: sId,
-        accountnumber: tronAddress,
-        position: 1,
+        accountnumber: account,
+        position: positionselect,
         amount: 10,
-        traxn: hash,
+        traxn: account,
         // traxn:"a7f77af7732431cb38c1b0ce18361fd4d500aedbf9a039bdc9151230fa9600e5"
 
       })
-      console.log(res)
-      if (res.data.data == "waiting") {
+      console.log("Register_data", res.data.data)
+      if (res.data.data.result == "waiting") {
+        setNewUserID(res.data.data.outputuid)
         console.log(res.data)
-        // localStorage.setItem('user_Id', uid)
+        setisVisible(false)
+        setisVisible2(true)
+        localStorage.setItem('NewUserID', res.data.data.outputuid)
         setloader(true)
-        setTimeout(() => {
-          handleLogin2(tronAddress)
-        }, 80000);
+        // setTimeout(() => {
+        //   handleLogin2(tronAddress)
+        // }, 80000);
         toast.success('Registered Successfully')
 
       } else {
         toast.error('Account Already Resgistered with this ID')
-        nevigate('/dashboard')
+
+        nevigate('/login')
+        setloader(false);
+        // setisVisible2(true)
+        // setisVisible(false)
+
+
 
       }
       // handleLogin2(tronAddress)
 
       // toast.success('Successfully registered !')
-      // setloader(false);
+      setloader(false);
 
 
     } catch (e) {
@@ -216,7 +236,8 @@ function Registration() {
   }
   const handleLogin2 = async (ids) => {
     setloader(true)
-    console.log("Tayyab");
+    console.log('UserAddress', ids)
+   
     let res = await dispatch(loginAction(ids))
     console.log('API Res', res)
     if (res) {
@@ -231,6 +252,32 @@ function Registration() {
     }
   }
 
+  let Userid=localStorage.getItem('NewUserID')
+  console.log("NEWUSERIDHER",Userid);
+
+
+  const Register_Hash = async (hash) => {
+    try {
+
+      let res = await axios.post('https://ulematic.herokuapp.com/UpdateRegisterHash', {
+        
+          "uid": Userid,
+          "accountnumber": account,
+          "traxn": hash 
+        }
+      )
+
+
+      console.log("Register_Hash",res);
+      setTimeout(() => {
+        handleLogin2(account)
+      }, 80000);
+
+    } catch (e) {
+      console.log("Erreo while call ing Register_Hash API", e);
+    }
+  }
+
   // useEffect(() => {
   //   setTimeout(() => {
   //     tronConnects();
@@ -239,10 +286,11 @@ function Registration() {
 
   // 50 50 _______________________________----------------------------------------
 
-  const CONTRACT_ADDRESS = 'TA3aJxL9pKd1knQgFehzdkXekeaQAxBrT6'
+  const CONTRACT_ADDRESS = 'TP1H8njtdn8y2J21F2nEb2Ska9cUByAVNY'
   const Token_contract_Address = 'TLcKN2SBTAhiuUmkCvb86hRGdnV42cGyrt'
 
   const SellToken = async () => {
+
 
     try {
       setIsLoading(true);
@@ -259,34 +307,15 @@ function Registration() {
         // ratematic=ratematic*1000000000000000000
         // ratematic=parseInt(ratematic).toString()
         console.log("hassaan", rate)
-        rate = rate * 1000000
-        rate = rate * 10
+      rate = rate * 1000000
+      
         rate = parseInt(rate).toString()
         console.log("asadas", rate)
-        // await Token_contract.approve(CONTRACT_ADDRESS, ratematic)
-        //   .send({
-        //     shouldPollResponse: true,
-        //   })
-        //   .then((output) => {
-        //     console.log('- Output:', output, '\n')
-        //     toast.success('Approve  Successfull')
-
-
-        //   })
-        //   .catch((e) => {
-        //     toast.error(e.message)
-        //     console.log('Error while caling Approve  Fuction', e)
-        // setIsLoading(false);
-
-        // })
-
-        await contract
-          .buy()
-          .send({
-            // shouldPollResponse: true,
-            callValue: rate,
-            feeLimit: 100000000
-          })
+        await contract.buy().send({
+          // shouldPollResponse: true,
+          callValue: rate,
+          feeLimit: 100000000
+        })
 
           .then(async (hash) => {
             if (hash != '') {
@@ -294,8 +323,9 @@ function Registration() {
                 console.log('Hash:', hash, '\n')
                 toast.success('Transaction is complete')
                 setloader(true)
+
+                Register_Hash(hash)
                
-                registered(hash)
                 setIsLoading(false);
 
               } catch (e) {
@@ -326,7 +356,7 @@ function Registration() {
   }
 
 
-  const chackfunction=async()=>{
+  const chackfunction = async () => {
     setIsLoading(true);
 
     setTimeout(() => {
@@ -337,7 +367,7 @@ function Registration() {
   return (
     <div>
       <div id="root">
-        {loader == true ?
+        {loader == true || account == null ?
           <>
             <div className='LoaderSpinner'>
               <Dna
@@ -393,14 +423,14 @@ function Registration() {
 
                         {/* <!-- Modal --> */}
                         <div
-                          class="modal fade"
+                          class="modal fade "
                           id="exampleModal"
                           tabindex="-1"
                           aria-labelledby="exampleModalLabel"
                           aria-hidden="true"
                         >
                           <div class="modal-dialog">
-                            <div class="modal-content pop-up-add" >
+                            <div class="modal-content pop-up-add uperpop" >
                               <div class="modal-header">
                                 <h5 class="modal-title" id="exampleModalLabel">
                                   {' '}
@@ -426,75 +456,16 @@ function Registration() {
                                 required
                               />
                               <div class="">
-                                <Popup
-                                  trigger={
-                                    <button
-                                      type="button"
-                                      class="btn btn-secondary lg-btn"
-                                      style={{ width: '49%' }}
-                                      data-bs-dismiss="modal"
-                                    >
-                                      OK
-                                    </button>
-                                  }
-                                  position="right center"
+
+                                <button
+                                  type="button"
+                                  class="btn btn-secondary lg-btn"
+                                  style={{ width: '49%' }}
+                                  data-bs-dismiss="modal"
+                                  onClick={() => setisVisible(true)}
                                 >
-                                  <div id="myModal" class="">
-                                    <div
-                                      class="modal-content boxset set_transfort2" id='model-add'
-                                      style={{ marginTop: '-340px', position: 'fixed' }}
-                                    >
-                                      <h4 style={{ color: 'white' }}>Referral Confirmation</h4>
-                                      <p style={{ color: 'white' }}>
-                                        Your Current Referral ID is <span>{sId}</span>
-                                      </p>
-                                      <div class="maticRate" style={{ marginLeft: '-9%' }}>
-                                        <div>
-                                          <span style={{ color: 'white' }}>Tron</span>
-                                          <input type="number" style={{ backgroundColor: "rgb(32 15 94)", color: 'white' }} placeholder={`${rate}`} name="number" readonly="" />
-                                        </div>
-                                        {/* <div>
-                                          <span style={{color:'white'}}>ULE</span>
-                                          <input type="number" style={{ backgroundColor: "rgb(32 15 94)" ,color:'white'}} placeholder={`${ratematic}`} name="number" readonly="" />
-                                        </div> */}
-                                      </div>
-
-                                      <select class="selecOpt" id='selecOpt-1' style={{ marginLeft: '14%', backgroundColor: "rgb(32 15 94)", color: 'white' }}>
-                                        <option value="Left" style={{ color: 'white', }}>Left</option>
-                                        <option value="Right" style={{ color: 'white', }}>Right</option>
-                                      </select>
-                                      <div class="uplineBtn modal_btn">
-                                        <button class="btn mr_5 lg-btn" style={{ color: 'white', }} onClick={() => SellToken()} disabled={isLoading}>
-                                          {isLoading ? (
-                                            <div class="spinner-border text-secondary" role="status">
-                                              <span class="visually-hidden">Loading...</span>
-                                            </div>
-                                          )
-                                            :
-                                            <>Proceed</>
-
-                                          }
-
-                                        </button>
-                                        <a
-                                          href="#"
-                                          class="btn closeBtn lg-btn"
-                                          style={{
-                                            width: '68%',
-                                            marginLeft: '2%',
-                                            fontSize: '14px',
-                                            color: 'white',
-                                            height: '32px',
-                                            paddingTop: '5px;',
-                                          }}
-                                        >
-                                          No I want to change ID
-                                        </a>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </Popup>
-
+                                  OK
+                                </button>
                                 <a
                                   href="#"
                                   onClick={handleClose}
@@ -507,7 +478,137 @@ function Registration() {
                               </div>
                             </div>
                           </div>
+
+
+
+
+
+
+
                         </div>
+                        {
+                          isVisible ?
+                            <div id="myModal" class="">
+                              <div
+                                class="modal-content boxset set_transfort2" id='model-add'
+                                style={{ marginTop: '-340px', position: 'fixed' }}
+                              >
+                                <h4 style={{ color: 'white' }}>Referral Confirmation</h4>
+                                <p style={{ color: 'white' }}>
+                                  Your Current Referral ID is <span>{sId}</span>
+                                </p>
+                                <div class="maticRate" style={{ marginLeft: '-9%' }}>
+                                  <div>
+                                    <span style={{ color: 'white' }}>Tron</span>
+                                    <input type="number" style={{ backgroundColor: "rgb(32 15 94)", color: 'white' }} placeholder={`${rate}`} name="number" readonly="" />
+                                  </div>
+                                  {/* <div>
+                                  <span style={{color:'white'}}>ULE</span>
+                                  <input type="number" style={{ backgroundColor: "rgb(32 15 94)" ,color:'white'}} placeholder={`${ratematic}`} name="number" readonly="" />
+                                </div> */}
+                                </div>
+
+                                <select class="selecOpt" id='selecOpt-1' style={{ marginLeft: '14%', backgroundColor: "rgb(32 15 94)", color: 'white' }} onChange={(e) => setpositionselect(e.target.value)}>
+                                  <option value="1" style={{ color: 'white', }}>Left</option>
+                                  <option value="2" style={{ color: 'white', }}>Right</option>
+                                </select>
+                                <div class="uplineBtn modal_btn">
+                                  <button class="btn mr_5 lg-btn" style={{ color: 'white', }} onClick={() => registered()} disabled={isLoading}>
+                                    {isLoading ? (
+                                      <div class="spinner-border text-secondary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                      </div>
+                                    )
+                                      :
+                                      <>Proceed</>
+
+                                    }
+
+                                  </button>
+                                  <a
+                                    href="#"
+                                    class="btn closeBtn lg-btn"
+                                    style={{
+                                      width: '68%',
+                                      marginLeft: '2%',
+                                      fontSize: '14px',
+                                      color: 'white',
+                                      height: '32px',
+                                      paddingTop: '5px;',
+                                    }}
+                                  >
+                                    No I want to change ID
+                                  </a>
+                                </div>
+                              </div>
+                            </div> :
+                            <></>
+
+                        }
+
+                        {
+                          isVisible2 ?
+                            <div id="myModal " class="mypop">
+                              <div
+                                class="modal-content boxset set_transfort2"
+                                id="model-add"
+                                style={{ marginTop: '-340px', position: 'fixed' }}
+                              >
+                                <h4 style={{ color: 'white' }}>Payment here</h4>
+                                <p style={{ color: 'white' }}>
+                                  Your Current Referral ID is <span>{Userid}</span>
+                                </p>
+                                <div class="maticRate" style={{ marginLeft: '-9%' }}>
+                                  <div>
+                                    <span style={{ color: 'white' }}>Tron</span>
+                                    <input
+                                      type="number"
+                                      style={{ backgroundColor: 'rgb(32 15 94)', color: 'white' }}
+                                      placeholder={`${rate}`}
+                                      name="number"
+                                      readonly=""
+                                    />
+                                  </div>
+                                </div>
+                                <div style={{ display: 'flex', marginLeft: '2%' }}>
+                                  <button
+                                    class="btn mr_5 lg-btn"
+                                    style={{ color: 'white' }}
+                                    onClick={() => SellToken()}
+                                    // onClick={()=>About()}
+                                    disabled={isLoading}
+                                  >
+                                    {isLoading ? (
+                                      <div class="spinner-border text-secondary" role="status">
+                                        <span class="visually-hidden">Loading...</span>
+                                      </div>
+                                    ) : (
+                                      <>Pay</>
+                                    )}
+                                  </button>
+
+                                  <a
+                                    href="#"
+                                    class="btn closeBtn lg-btn"
+                                    style={{
+                                      width: '49%%',
+                                      marginLeft: '2%',
+                                      fontSize: '14px',
+                                      color: 'white',
+                                      height: '40px',
+                                      paddingTop: '5px;',
+                                    }}
+                                  >
+                                    Cancel
+                                  </a>
+                                </div>
+                              </div>
+                            </div>
+
+
+                            :
+                            <></>
+                        }
 
                         <form>
                           <div class="form-row">

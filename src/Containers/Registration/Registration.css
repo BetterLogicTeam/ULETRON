@@ -323,3 +323,9 @@ color: black !important;
  #model-add{
     margin-left: -9%;
  }
+ .mypop{
+    z-index: 1000 !important;
+ }
+ .uperpop{
+    z-index: 999 !important;
+ }

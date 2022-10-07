@@ -707,7 +707,7 @@ export const abiToken = [
 ];
 
 export const troncontract =
-  "https://tronscan.org/#/contract/TA3aJxL9pKd1knQgFehzdkXekeaQAxBrT6";
+  "https://tronscan.org/#/contract/TP1H8njtdn8y2J21F2nEb2Ska9cUByAVNY";
 export const troncontract_abi = [
   { inputs: [], stateMutability: "nonpayable", type: "constructor" },
   {
